@@ -3,7 +3,6 @@ import Book from './Book'
 class BookShelf extends React.Component{
     constructor(props){
         super(props);
-        this.state={books:[]}
     }
     render(){
         return(
@@ -12,12 +11,14 @@ class BookShelf extends React.Component{
                 <h2 className="bookshelf-title">{this.props.title}</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
-                        {this.state.books.map((book) =>(
-                            <li>
-                                <Book id={book.id} title={book.title} author={book.author} updateShelf={(shelf) => {
-                                    this.setState((prevState) =>{
-                                        books:prevState.books.filter((currentBook) => (currentBook.id!==book.id))
-                                    })
+                        {this.props.books.map((book) =>(
+                            <li key={book.id}>
+                                <Book
+                                image={book.imageLinks.thumbnail} 
+                                title={book.title} authors={book.authors} 
+                                shelf={book.shelf}
+                                onShelfChange={(shelf) => {
+                                    this.props.updateShelf(book,shelf)
                                 }}/>
                             </li>
                         ))}
