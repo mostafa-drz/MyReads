@@ -1,12 +1,8 @@
 import React from 'react'
 
 class Book extends React.Component{
-    constructor(props){
-        super(props);
-    }
     shelves=[{type:'currentlyReading',title:'Currently Reading'},{type:'wantToRead',title:'Want To Read'},{type:'read',title:"Read"},{type:'none',title:'none'}];
     render(){
-        const bookId=this.props.bookId;
         return(
             <div className="book">
                 <div className="book-top">

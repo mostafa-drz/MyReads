@@ -64,6 +64,7 @@ class BooksApp extends React.Component {
                   books={this.state.books.filter((book) => (book.shelf)===shelf.type)}
                   key={shelf.type}
                   updateShelf={(book,shelf) => {
+                    BooksAPI.update(book,shelf);
                     let newState=this.state.books.filter((b) => (book.id)!==b.id)
                     book.shelf=shelf;
                     newState.push(book);
