@@ -4,8 +4,9 @@ import './App.css'
 
 
 //components
-import BookShelf from './components/BookShelf'
-
+import BookShelf      from    './components/BookShelf'
+import SearchResults  from    './components/SearchResults'
+import SearchBar      from    './components/SearchBar'
 
 class BooksApp extends React.Component {
   state = {
@@ -17,7 +18,8 @@ class BooksApp extends React.Component {
      */
     showSearchPage: false,
     books:[],
-    shelves:[]
+    shelves:[],
+    searchText:''
   }
   componentWillMount(){
     BooksAPI.getAll().then((res) =>{
@@ -32,24 +34,23 @@ class BooksApp extends React.Component {
       <div className="app">
         {this.state.showSearchPage ? (
           <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
+            <SearchBar onSearchChange={(text) => {
+              this.setState((prevState) =>({
+                searchText:text
+              }))
+            }}/>
+            <SearchResults
+             search={this.state.searchText}
+             updateShelf={(book,shelf) => {
+                BooksAPI.update(book,shelf);
+                let newState=this.state.books.filter((b) => (book.id)!==b.id)
+                book.shelf=shelf;
+                newState.push(book);
+                this.setState((prevState) => ({
+                  books:newState
+                }))
+            }}
+            />
           </div>
         ) : (
           <div className="list-books">

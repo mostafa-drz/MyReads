@@ -12,7 +12,8 @@ class BookShelf extends React.Component{
                             <li key={book.id}>
                                 <Book
                                 image={book.imageLinks.thumbnail} 
-                                title={book.title} authors={book.authors} 
+                                title={book.title} 
+                                authors={book.authors} 
                                 shelf={book.shelf}
                                 onShelfChange={(shelf) => {
                                     this.props.updateShelf(book,shelf)

@@ -17,7 +17,7 @@ class Book extends React.Component{
                     </div>
                 </div>
                 <div className="book-title">{this.props.title}</div>
-                <div className="book-authors">{this.props.authors.map((author) =><p key={author}>{author}</p>)}</div>
+                <div className="book-authors">{this.props.authors && this.props.authors.map((author) => <p key={author}>{author}</p>)}</div>
             </div>
         )
     }
