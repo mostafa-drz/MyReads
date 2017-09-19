@@ -18,12 +18,12 @@ class SearchResults extends React.Component{
                     resultBooks=resultBooks.map((resBook) =>{
                        if(resBook.title===book.title){
                            resBook.shelf=book.shelf;
-                       }else{
-                           resBook.shelf="none"
                        }
                        return resBook;
                     })
             })
+           
+        }).then(() =>{
             this.setState(() => ({
                 results:resultBooks
             }))
@@ -35,24 +35,22 @@ class SearchResults extends React.Component{
         return(
           <div className="search-books-results">
                 <ol className="books-grid">
-                {
-                  
-                    (this.state.results && this.state.results.length>0 &&
-                        this.state.results.map((book) => (
-                            <Book
-                            title={book.title}
-                            authors={book.authors} 
-                            shelf={book.shelf}
-                            image={book.imageLinks.thumbnail} 
-                            key={book.id}
-                            onShelfChange={(shelf) => {
-                                this.props.updateShelf(book,shelf)
-                            }}
-                            />
-                        ))
-                    )
-                  
-                }
+                    {
+                        (this.state.results && this.state.results.length>0 &&
+                            this.state.results.map((book) => (
+                                <Book
+                                title={book.title}
+                                authors={book.authors} 
+                                shelf={book.shelf || "none"}
+                                image={book.imageLinks.thumbnail} 
+                                key={book.id}
+                                onShelfChange={(shelf) => {
+                                    this.props.updateShelf(book,shelf)
+                                }}
+                                />
+                            ))
+                        )
+                    }
                 </ol>
           </div>
         )
