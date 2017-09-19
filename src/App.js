@@ -41,6 +41,7 @@ class BooksApp extends React.Component {
             }}/>
             <SearchResults
              search={this.state.searchText}
+             currentBooks={this.state.books}
              updateShelf={(book,shelf) => {
                 BooksAPI.update(book,shelf);
                 let newState=this.state.books.filter((b) => (book.id)!==b.id)
