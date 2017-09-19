@@ -14,15 +14,16 @@ class SearchResults extends React.Component{
             resultBooks=res;
         
         }).then(() =>{
-            this.props.currentBooks.forEach(function(book){
+            if(resultBooks && resultBooks.length>0){
+                this.props.currentBooks.forEach(function(book){
                     resultBooks=resultBooks.map((resBook) =>{
                        if(resBook.title===book.title){
                            resBook.shelf=book.shelf;
                        }
                        return resBook;
                     })
-            })
-           
+                })
+            }
         }).then(() =>{
             this.setState(() => ({
                 results:resultBooks
