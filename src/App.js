@@ -7,7 +7,7 @@ import './App.css'
 import BookShelf      from    './components/BookShelf'
 import SearchResults  from    './components/SearchResults'
 import SearchBar      from    './components/SearchBar'
-import {Route,Link}        from    'react-router-dom'
+import {Route,Link}   from    'react-router-dom'
 class BooksApp extends React.Component {
   state = {
     books:[],
@@ -80,5 +80,4 @@ class BooksApp extends React.Component {
     )
   }
 }
-
 export default BooksApp
