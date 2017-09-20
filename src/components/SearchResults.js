@@ -25,17 +25,17 @@ class SearchResults extends React.Component{
                     })
                 })
             }
-        }).then(() =>{
-            this.setState(() => ({
-                results:resultBooks
-            }))
+            if(this.refs.resultsRef)
+            {
+                this.setState(() => ({
+                    results:resultBooks
+                }))
+            }
         })
-        
     }
-
     render(){
         return(
-          <div className="search-books-results">
+          <div ref="resultsRef" className="search-books-results">
                 <ol className="books-grid">
                     {
                         (this.state.results && this.state.results.length>0 &&
@@ -43,7 +43,7 @@ class SearchResults extends React.Component{
                                 <Book
                                 title={book.title}
                                 authors={book.authors} 
-                                shelf={book.shelf || "none"}
+                                shelf={!book.shelf || book.shelf==="none" ? "" : book.shelf}
                                 image={book.imageLinks.thumbnail} 
                                 key={book.id}
                                 onShelfChange={(shelf) => {

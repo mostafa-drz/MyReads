@@ -1,7 +1,7 @@
 import React from 'react'
-
+import config from '../config'
 class Book extends React.Component{
-    shelves=[{type:'currentlyReading',title:'Currently Reading'},{type:'wantToRead',title:'Want To Read'},{type:'read',title:"Read"},{type:'none',title:'none'}];
+    shelves=config.shelves;
     render(){
         return(
             <div className="book">
@@ -9,7 +9,7 @@ class Book extends React.Component{
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url('+this.props.image+')' }}></div>
                     <div className="book-shelf-changer">
                         <select onChange={(e) => this.props.onShelfChange(e.target.value)} value={this.props.shelf}>
-                            <option value="none"disabled>Move to...</option>
+                            <option value="" disabled>Move to...</option>
                             {this.shelves.map((shelf) => (
                                 <option value={shelf.type} key={shelf.type}>{shelf.title}</option>
                             ))}

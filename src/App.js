@@ -1,7 +1,7 @@
 import React from 'react'
- import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
-
+import config from './config'
 
 //components
 import BookShelf      from    './components/BookShelf'
@@ -11,14 +11,21 @@ import {Route,Link}   from    'react-router-dom'
 class BooksApp extends React.Component {
   state = {
     books:[],
-    shelves:[],
     searchText:''
+  }
+  shelves=config.shelves;
+  updateShelf = (book,shelf) =>{
+    BooksAPI.update(book,shelf).then(() =>{
+      book.shelf=shelf;
+      this.setState(prevState => ({
+        books:prevState.books.filter(b => (b.id!==book.id)).concat([book])
+      }))
+    })
   }
   componentWillMount(){
     BooksAPI.getAll().then((res) =>{
       this.setState((prevState) => ({
         books:res,
-        shelves:[{type:'currentlyReading',title:'Currently Reading'},{type:'wantToRead',title:'Want To Read'},{type:'read',title:"Read"},{type:'none',title:''}]
       }))
     })
   }
@@ -28,22 +35,15 @@ class BooksApp extends React.Component {
             <Route exact path='/search' render={() => (
               <div className="search-books">
                   <SearchBar onSearchChange={(text) => {
-                    this.setState((prevState) =>({
+                    this.setState(() =>({
                       searchText:text
                     }))
                   }}/>
                 <SearchResults
                   search={this.state.searchText}
                   currentBooks={this.state.books}
-                  updateShelf={(book,shelf) => {
-                      BooksAPI.update(book,shelf);
-                      let newState=this.state.books.filter((b) => (book.id)!==b.id)
-                      book.shelf=shelf;
-                      newState.push(book);
-                      this.setState((prevState) => ({
-                        books:newState
-                      }))
-                  }}/>
+                  updateShelf={this.updateShelf}
+                />
               </div>
             )}/>
             <Route exact path="/" render={() =>(
@@ -53,20 +53,12 @@ class BooksApp extends React.Component {
                   </div>
                   <div className="list-books-content">
                     <div>
-                      {this.state.shelves.map((shelf) => ( shelf.type!=='none' &&
+                      {this.shelves.map((shelf) => ( shelf.type!=='none' &&
                         <BookShelf 
                         title={shelf.title}
                         books={this.state.books.filter((book) => (book.shelf)===shelf.type)}
                         key={shelf.type}
-                        updateShelf={(book,shelf) => {
-                          BooksAPI.update(book,shelf);
-                          let newState=this.state.books.filter((b) => (book.id)!==b.id)
-                          book.shelf=shelf;
-                          newState.push(book);
-                          this.setState((prevState) => ({
-                            books:newState
-                          }))
-                        }}
+                        updateShelf={this.updateShelf}
                         />
                       ))}
                     </div>
